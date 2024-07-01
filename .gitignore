@@ -1,0 +1,83 @@
+/Source Code/client/.env
+
+# Logs
+/Source Code/client/logs
+/Source Code/client/*.log
+/Source Code/client/npm-debug.log*
+/Source Code/client/yarn-debug.log*
+/Source Code/client/yarn-error.log*
+/Source Code/client/pnpm-debug.log*
+/Source Code/client/lerna-debug.log*
+
+/Source Code/client/node_modules
+/Source Code/client/dist
+/Source Code/client/dist-ssr
+/Source Code/client/*.local
+
+# Editor directories and files
+/Source Code/client/.vscode/*
+/Source Code/client/!.vscode/extensions.json
+/Source Code/client/.idea
+/Source Code/client/.DS_Store
+/Source Code/client/*.suo
+/Source Code/client/*.ntvs*
+/Source Code/client/*.njsproj
+/Source Code/client/*.sln
+/Source Code/client/*.sw?
+
+# compiled output
+/Source Code/server/dist
+/Source Code/server/node_modules
+/Source Code/server/build
+
+# Logs
+/Source Code/server/serverlogs
+/Source Code/server/*.log
+/Source Code/server/npm-debug.log*
+/Source Code/server/pnpm-debug.log*
+/Source Code/server/yarn-debug.log*
+/Source Code/server/yarn-error.log*
+/Source Code/server/lerna-debug.log*
+
+# OS
+/Source Code/server/.DS_Store
+
+# Tests
+/Source Code/server/coverage
+/Source Code/server/.nyc_output
+
+# IDEs and editors
+/Source Code/server/.idea
+/Source Code/server.project
+/Source Code/server.classpath
+/Source Code/server.c9/
+/Source Code/server*.launch
+/Source Code/server.settings/
+/Source Code/server*.sublime-workspace
+
+# IDE - VSCode
+/Source Code/server.vscode/*
+/Source Code/server!.vscode/settings.json
+/Source Code/server!.vscode/tasks.json
+/Source Code/server!.vscode/launch.json
+/Source Code/server!.vscode/extensions.json
+
+# dotenv environment variable files
+/Source Code/server/.env
+/Source Code/server/.env.development.local
+/Source Code/server/.env.test.local
+/Source Code/server/.env.production.local
+/Source Code/server/.env.local
+
+# temp directory
+/Source Code/server/.temp
+/Source Code/server/.tmp
+
+# Runtime data
+/Source Code/server/pids
+/Source Code/server/*.pid
+/Source Code/server/*.seed
+/Source Code/server/*.pid.lock
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+/Source Code/server/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

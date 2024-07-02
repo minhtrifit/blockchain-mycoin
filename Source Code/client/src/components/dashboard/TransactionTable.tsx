@@ -95,7 +95,7 @@ const TransactionTable = (props: PropType) => {
 
   return (
     <div className="w-[300px] sm:w-[500px] lg:w-full bg-white p-4 flex flex-col gap-5 rounded-md">
-      <div className="mx-auto my-5 flex items-center gap-5">
+      <div className="mx-auto my-5 flex flex-wrap items-center gap-5">
         <img className="w-[120px]" src="./assets/logo-mew.png" alt="logo" />
         <h1 className="text-3xl font-bold text-primary-green">Transactions</h1>
         <div></div>

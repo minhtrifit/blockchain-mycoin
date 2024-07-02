@@ -16,6 +16,7 @@ import {
   clearLastestTransactions,
   setChain,
 } from "@/redux/actions/blockchain.action";
+import { reduceCoin } from "@/redux/actions/user.action";
 import { BlockType, TransactionType, WalletType } from "@/types";
 import { getWalletCoins } from "@/redux/reducers/user.reducer";
 
@@ -59,6 +60,8 @@ const BlockChainProvider = (props: PropType) => {
             : "Get system coin",
         };
 
+        dispatch(reduceCoin(trans.amount ? trans.amount : 0));
+
         await dispatchAsync(createNewTransaction(trans)).unwrap();
       }
 
@@ -93,8 +96,9 @@ const BlockChainProvider = (props: PropType) => {
         timestamp: getCurrentTime(),
         transactions: "Genesis block",
         previousHash: "0",
-        hash: caculateHash("0", getCurrentTime(), "Genesis block", 0),
-        nonce: 0,
+        hash: caculateHash("0", getCurrentTime(), "Genesis block", "0"),
+        // nonce: 0,
+        validator: "MyCoin System",
       };
 
       const genesisTransaction: TransactionType = {

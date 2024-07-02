@@ -5,10 +5,10 @@ export const caculateHash = (
   previousHash: string,
   timestamp: string,
   transactions: any,
-  nonce: number
+  validator: string
 ) => {
   return SHA256(
-    previousHash + timestamp + JSON.stringify(transactions) + nonce
+    previousHash + timestamp + JSON.stringify(transactions) + validator
   ).toString();
 };
 

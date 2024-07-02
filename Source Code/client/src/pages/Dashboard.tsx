@@ -89,8 +89,10 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <ChainTable />
-      <TransactionTable walletAddress={null} />
+      <div className="w-[90%] 2xl:w-full overflow-x-auto flex flex-col gap-10">
+        <ChainTable />
+        <TransactionTable walletAddress={null} />
+      </div>
     </div>
   );
 };

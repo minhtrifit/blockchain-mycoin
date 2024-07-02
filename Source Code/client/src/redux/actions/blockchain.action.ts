@@ -14,3 +14,9 @@ export const clearLastestBlock = createAction("blockchains/clearLastestBlock");
 export const clearLastestTransactions = createAction(
   "blockchains/clearLastestTransactions"
 );
+export const pendingTransactions = createAction<any>(
+  "blockchains/pendingTransactions"
+);
+export const updateValidators = createAction<string>(
+  "blockchains/updateValidators"
+);

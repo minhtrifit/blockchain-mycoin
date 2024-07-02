@@ -12,8 +12,8 @@ export class createNewBlock {
   previousHash: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  nonce: number;
+  @IsString()
+  validator: string;
 
   @IsNotEmpty()
   @IsString()

@@ -47,8 +47,8 @@ export const getAllTransactions = (MyCoin: BlockChainType) => {
   return result;
 };
 
-export const chooseValidator = (MyCoin: BlockChainType): string => {
-  const sumOfStakes: any = Object.values(MyCoin.validators).reduce(
+export const chooseValidator = (validators: any): string => {
+  const sumOfStakes: any = Object.values(validators).reduce(
     (sum: any, stake: any) => sum + stake,
     0
   ); // Tổng số lượng stake của tất cả validators
@@ -57,7 +57,7 @@ export const chooseValidator = (MyCoin: BlockChainType): string => {
   let cumulativeSum: any = 0;
 
   // Lựa chọn validator dựa trên xác suất tỉ lệ với stake của họ
-  for (const [address, stake] of Object.entries(MyCoin.validators)) {
+  for (const [address, stake] of Object.entries(validators)) {
     cumulativeSum += stake;
     if (rand < cumulativeSum) {
       return address;
@@ -65,4 +65,8 @@ export const chooseValidator = (MyCoin: BlockChainType): string => {
   }
 
   return ""; // Trường hợp không có validator nào được chọn
+};
+
+export const formatStakeFromCoin = () => {
+  return { address: 100 };
 };

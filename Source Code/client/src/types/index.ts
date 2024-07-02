@@ -10,7 +10,6 @@ export interface BlockType {
   transactions?: any;
   previousHash?: string;
   hash?: string;
-  nonce?: number;
   validator?: string;
 }
 

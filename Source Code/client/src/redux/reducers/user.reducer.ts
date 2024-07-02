@@ -8,7 +8,7 @@ import {
 } from "../../types/reduxthunk.type";
 import { WalletType } from "@/types";
 
-import { addCoin, setWallet } from "../actions/user.action";
+import { addCoin, setWallet, reduceCoin } from "../actions/user.action";
 
 // Interface declair
 interface UserState {
@@ -119,6 +119,33 @@ export const getWalletCoins = createAsyncThunk(
   }
 );
 
+export const getAllWalletCoins = createAsyncThunk(
+  "users/getAllWalletCoins",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async (data: { type: string }, thunkAPI) => {
+    try {
+      const response = await axios.get<any>(
+        `${import.meta.env.VITE_API_URL}/wallet/all-coin`,
+        {
+          signal: thunkAPI.signal,
+          headers: {
+            ["wallet-type"]: data?.type,
+          },
+        }
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.name === "AxiosError") {
+        return thunkAPI.rejectWithValue({ message: "Get all blocks failed" });
+      }
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 // InitialState value
 const initialState: UserState = {
   isLoading: false,
@@ -136,6 +163,10 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(addCoin, (state, action) => {
       const amount: number = action?.payload;
       state.eth += amount;
+    })
+    .addCase(reduceCoin, (state, action) => {
+      const amount: number = action?.payload;
+      state.eth -= amount;
     })
     .addCase(getWalletCoins.fulfilled, (state, action) => {
       const walletCoin = action?.payload;

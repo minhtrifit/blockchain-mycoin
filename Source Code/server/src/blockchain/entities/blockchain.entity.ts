@@ -12,7 +12,7 @@ export class Block {
   previousHash: string;
 
   @Column()
-  nonce: number;
+  validator: string;
 
   @Column()
   timestamp: string;

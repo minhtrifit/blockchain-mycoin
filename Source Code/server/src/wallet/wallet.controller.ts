@@ -33,4 +33,11 @@ export class WalletController {
 
     return this.walletService.getWalletCoins(walletAddress, walletType);
   }
+
+  @Get('/all-coin')
+  getAllWalletCoins(@Req() req) {
+    const walletType = req.headers['wallet-type'];
+
+    return this.walletService.getAllWalletCoins(walletType);
+  }
 }

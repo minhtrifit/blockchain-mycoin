@@ -8,6 +8,8 @@ import {
   clearLastestTransactions,
   createTransaction,
   setChain,
+  pendingTransactions,
+  updateValidators,
 } from "../actions/blockchain.action";
 
 import {
@@ -177,6 +179,7 @@ const initialState: UserState = {
     difficulty: 3,
     miningReward: 100,
     validators: null,
+    transactions: [],
   },
   lastestBlock: null,
   lastestTransactions: [],
@@ -195,14 +198,13 @@ const blockchainReducer = createReducer(initialState, (builder) => {
 
       if (lastestBlock && state.MyCoin.difficulty) {
         newBlock.previousHash = lastestBlock.hash;
-        newBlock.nonce = 0;
 
-        if (newBlock.previousHash) {
+        if (newBlock.previousHash && newBlock.validator) {
           newBlock.hash = caculateHash(
             newBlock.previousHash,
             getCurrentTime(),
             newBlock.transactions,
-            newBlock.nonce
+            newBlock.validator
           );
 
           // mineBlock(state.MyCoin.difficulty, newBlock);
@@ -211,7 +213,38 @@ const blockchainReducer = createReducer(initialState, (builder) => {
         }
       }
     })
+    .addCase(pendingTransactions, (state, action: any) => {
+      const sendAddress: any = action?.payload.sendAddress;
+      const validator: any = action?.payload.validator;
+      console.log("Send address:", sendAddress);
+      console.log("Validator:", validator);
 
+      const lastestBlock = getLatestBlock(state.MyCoin);
+
+      if (lastestBlock?.hash && state.MyCoin.difficulty) {
+        const block: BlockType | any = {
+          timestamp: getCurrentTime(),
+          transactions: state.MyCoin.transactions,
+          previousHash: lastestBlock.hash,
+          validator: validator,
+        };
+
+        block.hash = caculateHash(
+          lastestBlock.hash,
+          getCurrentTime(),
+          block.transactions,
+          block.validator
+        );
+
+        // mineBlock(state.MyCoin.difficulty, block);
+
+        // console.log("Block successfully mined!", block);
+        state.MyCoin.chain?.push(block);
+
+        state.lastestBlock = block;
+        state.lastestTransactions = block?.transactions;
+      }
+    })
     .addCase(createTransaction, (state, action) => {
       const transaction: TransactionType = action?.payload;
 
@@ -227,14 +260,14 @@ const blockchainReducer = createReducer(initialState, (builder) => {
           timestamp: getCurrentTime(),
           transactions: transaction,
           previousHash: lastestBlock.hash,
-          nonce: 0,
+          validator: "MyCoin System",
         };
 
         block.hash = caculateHash(
           lastestBlock.hash,
           getCurrentTime(),
           block.transactions,
-          block.nonce
+          block.validator
         );
 
         // mineBlock(state.MyCoin.difficulty, block);
@@ -244,6 +277,11 @@ const blockchainReducer = createReducer(initialState, (builder) => {
         state.lastestBlock = block;
         state.lastestTransactions.push(transaction);
       }
+    })
+    .addCase(updateValidators, (state, action) => {
+      const validators: any = action?.payload;
+
+      state.MyCoin.validators = validators;
     })
     .addCase(clearLastestBlock, (state) => {
       state.lastestBlock = null;

@@ -80,4 +80,16 @@ export class WalletService {
 
     return findWalletCoin;
   }
+
+  async getAllWalletCoins(type: string) {
+    const findWalletCoin = await this.coinRepository.find({
+      where: {
+        type: type,
+      },
+    });
+
+    if (!findWalletCoin) return null;
+
+    return findWalletCoin;
+  }
 }

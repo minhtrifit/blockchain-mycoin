@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 import elliptic from "elliptic";
 import { v4 as uuidv4 } from "uuid";
@@ -14,7 +15,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { TransactionType, WalletType } from "@/types";
 import { signTransaction } from "@/helpers/transaction";
-import { createTransaction } from "@/redux/actions/blockchain.action";
+import {
+  createTransaction,
+  pendingTransactions,
+  updateValidators,
+} from "@/redux/actions/blockchain.action";
+import { getAllWalletCoins } from "@/redux/reducers/user.reducer";
+import { chooseValidator } from "@/helpers/blockchain";
 
 interface TransactionFormType {
   toAddress: string;
@@ -25,6 +32,7 @@ const Send = () => {
   const ec = new elliptic.ec("secp256k1");
 
   const dispatch = useDispatch();
+  const dispatchAsync = useAppDispatch();
 
   const userWallet = useSelector<RootState, WalletType | null>(
     (state) => state.users.wallet
@@ -67,13 +75,32 @@ const Send = () => {
     });
   };
 
-  const handleStartMining = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleStartMining = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const myWalletAddress = userWallet?.address;
 
     if (myWalletAddress) {
+      const coinsRes = await dispatchAsync(
+        getAllWalletCoins({
+          type: "ETH",
+        })
+      ).unwrap();
+
+      const validators = coinsRes.reduce((acc: any, obj: any) => {
+        acc[obj.address] = obj.coin;
+        return acc;
+      }, {});
+
+      dispatch(updateValidators(validators));
+      const validator = chooseValidator(validators);
+
       // Starting miner...
-      // dispatch(minePendingTransactions(myWalletAddress));
+      dispatch(
+        pendingTransactions({
+          sendAddress: myWalletAddress,
+          validator: validator,
+        })
+      );
     }
 
     setStartMining(false);
@@ -95,11 +122,11 @@ const Send = () => {
         >
           <div className="flex flex-col gap-3">
             <h1 className="text-3xl font-bold text-primary-green">
-              Pending transactions
+              Confirm transactions
             </h1>
             <p>
               These transactions are waiting to be included in the next block.
-              Next block is created when you start mining the process.
+              Next block is created when you confirm the process.
             </p>
           </div>
           <Table>
@@ -136,7 +163,7 @@ const Send = () => {
             type="submit"
             className="mt-10 w-[250px] bg-primary-green p-4 font-bold text-white rounded-md"
           >
-            Start mining
+            Confirm transaction
           </button>
         </form>
       ) : (
